@@ -3,7 +3,7 @@
 RepoSentry is a secure, orchestrator-based repository analysis platform designed to automate vulnerability detection and provide actionable security intelligence.
 
 ## System Architecture
-RepoSentry utilizes a modular orchestration engine that manages isolated scanning environments. The system aggregates findings from multiple security modules—Secrets, Dependencies, Docker, and Hygiene—into a centralized, high-performance dashboard.
+RepoSentry utilizes a modular orchestration engine that manages isolated scanning environments. The system aggregates findings from multiple security modules—Secrets, Dependencies, Docker, and Hygiene into a centralized, high-performance dashboard.
 
 
 
