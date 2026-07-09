@@ -16,19 +16,19 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Install Poetry
 RUN pip install --no-cache-dir poetry
 
-# Configure Poetry to install directly into the system environment (Docker provides isolation)
+# Configure Poetry to install directly into the system environment
 RUN poetry config virtualenvs.create false
 
-# Copy the poetry dependency files first (for Docker cache optimization)
+# Copy the poetry dependency files first
 COPY pyproject.toml poetry.lock* ./
 
-# Install dependencies (ignoring the root package and dev dependencies)
+# Install dependencies
 RUN poetry install --no-root --only main
 
 # Create a non-root user for security
 RUN addgroup --system appgroup && adduser --system --group appuser
 
-# Copy the rest of the backend application code
+# Copy the rest of the application code (copies both backend and frontend into /app)
 COPY . .
 
 # Transfer ownership to the non-root user
@@ -40,6 +40,8 @@ USER appuser
 # Expose the standard FastAPI port
 EXPOSE 8000
 
-# Start the uvicorn server. 
-# Since main.py is inside the "app" folder, we call "app.main:app"
+# CRITICAL FIX: Shift the working directory into the backend folder before executing
+WORKDIR /app/backend
+
+# Start the uvicorn server
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
