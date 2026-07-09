@@ -4,7 +4,11 @@ export const useScanMutation = () => {
   return useMutation({
     mutationFn: async (repoUrl: string) => {
       console.log("Sending request to backend for:", repoUrl);
-      const response = await fetch('http://localhost:8000/api/v1/analyze/', {
+      
+      // Dynamic base URL fallback pattern for production vs local development
+      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+      
+      const response = await fetch(`${API_BASE_URL}/api/v1/analyze/`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
